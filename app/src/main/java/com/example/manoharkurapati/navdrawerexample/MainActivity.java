@@ -13,10 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ShareFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +85,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Toast.makeText(this,"Camera Selected",Toast.LENGTH_SHORT).show();
-
             CameraFragment cameraFragment = new CameraFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.layout_for_fragment,
@@ -93,8 +93,6 @@ public class MainActivity extends AppCompatActivity
             ).commit();
 
         } else if (id == R.id.nav_gallery) {
-            Toast.makeText(this,"Gallery Selected",Toast.LENGTH_SHORT).show();
-
             GalleryFragment galleryFragment = GalleryFragment.newInstance("some1", "some2");
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(
@@ -103,13 +101,25 @@ public class MainActivity extends AppCompatActivity
                     galleryFragment.getTag()
             ).commit();
 
-
         } else if (id == R.id.nav_share) {
-            Toast.makeText(this, "Share Selected", Toast.LENGTH_SHORT).show();
+            ShareFragment shareFragment = ShareFragment.newInstance("data1");
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(
+                    R.id.layout_for_fragment,
+                    shareFragment,
+                    shareFragment.getTag()
+            ).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(String str1) {
+
+        Toast.makeText(this, str1, Toast.LENGTH_SHORT).show();
+
     }
 }
